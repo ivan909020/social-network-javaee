@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ua.ivan909020.app.dao.UserDao;
 import ua.ivan909020.app.domain.entities.User;
@@ -164,6 +166,28 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	public Set<User> findFollowersByUserId(Integer id, int offset, int limit) {
+		String query = "select * from users_followers where user_id = ? offset ? limit ?";
+		Set<User> followers = new HashSet<>();
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, id);
+			statement.setInt(2, offset);
+			statement.setInt(3, limit);
+			try (ResultSet result = statement.executeQuery()) {
+				while (result.next()) {
+					int followerId = result.getInt("follower_id");
+					User user = findById(followerId);
+					followers.add(user);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find followers by user id " + id, e);
+		}
+		return followers;
+	}
+
+	@Override
 	public int countFollowingByUserId(Integer id) {
 		String query = "select count(*) from users_followers where follower_id = ?";
 		int count = 0;
@@ -179,6 +203,28 @@ public class UserDaoImpl implements UserDao {
 			throw new DatabaseException("Failed to find following count by follower id" + id, e);
 		}
 		return count;
+	}
+
+	@Override
+	public Set<User> findFollowingByUserId(Integer id, int offset, int limit) {
+		String query = "select * from users_followers where follower_id = ? offset ? limit ?";
+		Set<User> following = new HashSet<>();
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, id);
+			statement.setInt(2, offset);
+			statement.setInt(3, limit);
+			try (ResultSet result = statement.executeQuery()) {
+				while (result.next()) {
+					int userId = result.getInt("user_id");
+					User user = findById(userId);
+					following.add(user);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find following by follower id " + id, e);
+		}
+		return following;
 	}
 
 }

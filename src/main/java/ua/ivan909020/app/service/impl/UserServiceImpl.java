@@ -1,6 +1,7 @@
 package ua.ivan909020.app.service.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import ua.ivan909020.app.dao.UserDao;
 import ua.ivan909020.app.dao.impl.UserDaoImpl;
@@ -96,6 +97,21 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDao.countFollowersByUserId(id);
 	}
+	
+	@Override
+	public Set<User> findFollowersByUserId(Integer id, int page, int size) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id of user must not be null");
+		}
+		if (page < 1) {
+			throw new IllegalArgumentException("Page must be larger than 1");
+		}
+		if (size < 10) {
+			throw new IllegalArgumentException("Size must be larger than 10");
+		}
+		int offset = (page - 1) * size;
+		return userDao.findFollowersByUserId(id, offset, size);
+	}
 
 	@Override
 	public int countFollowingByUserId(Integer id) {
@@ -103,6 +119,21 @@ public class UserServiceImpl implements UserService {
 			throw new IllegalArgumentException("Id of user must not be null");
 		}
 		return userDao.countFollowingByUserId(id);
+	}
+	
+	@Override
+	public Set<User> findFollowingByUserId(Integer id, int page, int size) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id of user must not be null");
+		}
+		if (page < 1) {
+			throw new IllegalArgumentException("Page must be larger than 1");
+		}
+		if (size < 10) {
+			throw new IllegalArgumentException("Size must be larger than 10");
+		}
+		int offset = (page - 1) * size;
+		return userDao.findFollowingByUserId(id, offset, size);
 	}
 
 }

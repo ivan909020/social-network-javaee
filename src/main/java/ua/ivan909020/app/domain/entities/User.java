@@ -3,6 +3,7 @@ package ua.ivan909020.app.domain.entities;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class User implements Serializable {
 
@@ -13,6 +14,8 @@ public class User implements Serializable {
 	private String password;
 	private String information;
 	private List<Post> posts;
+	private Set<User> followers;
+	private Set<User> following;
 
 	public User() {
 	}
@@ -57,6 +60,22 @@ public class User implements Serializable {
 		this.posts = posts;
 	}
 
+	public Set<User> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(Set<User> followers) {
+		this.followers = followers;
+	}
+
+	public Set<User> getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(Set<User> following) {
+		this.following = following;
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -68,12 +87,13 @@ public class User implements Serializable {
 		User other = (User) obj;
 		return Objects.equals(id, other.id) && Objects.equals(username, other.username)
 				&& Objects.equals(password, other.password) && Objects.equals(information, other.information)
-				&& Objects.equals(posts, other.posts);
+				&& Objects.equals(posts, other.posts) && Objects.equals(followers, other.followers)
+				&& Objects.equals(following, other.following);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, username, password, information, posts);
+		return Objects.hash(id, username, password, information, posts, followers, following);
 	}
 
 	@Override

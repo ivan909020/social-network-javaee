@@ -34,3 +34,18 @@
 		</div>
 	</div>
 </div>
+
+<c:if test="${user.getFollowers() != null}">
+	<div class="mt-3 mb-5">
+		<h4>Followers</h4>
+		<c:set var="users" value="${user.getFollowers()}" scope="request" />
+		<jsp:include page="users.jsp" />
+	</div>
+</c:if>
+<c:if test="${user.getFollowing() != null}">
+	<div class="mt-3 mb-5">
+		<h4>Following</h4>
+		<c:set var="users" value="${user.getFollowing()}" scope="request" />
+		<jsp:include page="users.jsp" />
+	</div>
+</c:if>

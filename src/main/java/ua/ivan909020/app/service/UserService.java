@@ -1,6 +1,7 @@
 package ua.ivan909020.app.service;
 
 import java.util.List;
+import java.util.Set;
 
 import ua.ivan909020.app.domain.entities.User;
 
@@ -13,7 +14,11 @@ public interface UserService extends DefaultService<User> {
 	List<User> findContainsUsername(String username, int page, int size);
 
 	int countFollowersByUserId(Integer id);
+	
+	Set<User> findFollowersByUserId(Integer id, int page, int size);
 
 	int countFollowingByUserId(Integer id);
+
+	Set<User> findFollowingByUserId(Integer id, int page, int size);
 
 }

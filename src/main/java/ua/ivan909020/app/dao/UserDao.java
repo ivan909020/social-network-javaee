@@ -1,6 +1,7 @@
 package ua.ivan909020.app.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import ua.ivan909020.app.domain.entities.User;
 
@@ -14,6 +15,10 @@ public interface UserDao extends DefaultDao<User> {
 	
 	int countFollowersByUserId(Integer id);
 	
+	Set<User> findFollowersByUserId(Integer id, int offset, int limit);
+	
 	int countFollowingByUserId(Integer id);
+	
+	Set<User> findFollowingByUserId(Integer id, int offset, int limit);
 
 }
