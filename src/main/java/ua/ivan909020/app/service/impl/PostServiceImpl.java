@@ -1,5 +1,7 @@
 package ua.ivan909020.app.service.impl;
 
+import java.util.List;
+
 import ua.ivan909020.app.dao.PostDao;
 import ua.ivan909020.app.dao.impl.PostDaoImpl;
 import ua.ivan909020.app.domain.entities.Post;
@@ -47,6 +49,23 @@ public class PostServiceImpl implements PostService {
 			throw new ValidationException("Id of post must not be null");
 		}
 		return postDao.update(post);
+	}
+	
+	@Override
+	public int countAll() {
+		return postDao.countAll();
+	}
+	
+	@Override
+	public List<Post> findAll(int page, int size) {
+		if (page < 1) {
+			throw new IllegalArgumentException("Page must be larger than 1");
+		}
+		if (size < 10) {
+			throw new IllegalArgumentException("Size must be larger than 10");
+		}
+		int offset = (page - 1) * size;
+		return postDao.findAll(offset, size);
 	}
 
 }

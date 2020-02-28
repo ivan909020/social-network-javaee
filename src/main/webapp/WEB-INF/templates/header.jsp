@@ -8,6 +8,14 @@
 		<span class="navbar-toggler-icon"></span>
 	</button>
 	<div class="collapse navbar-collapse" id="navbarText">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<a class="nav-link" href="/">Wall</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="search">Search</a>
+			</li>
+		</ul>
 		<span class="navbar-text">
 			<c:choose>
 				<c:when test="${AUTHENTICATED_USER == null}">

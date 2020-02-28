@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import ua.ivan909020.app.dao.PostDao;
 import ua.ivan909020.app.domain.entities.Post;
@@ -79,6 +81,48 @@ public class PostDaoImpl implements PostDao {
 			throw new DatabaseException("Failed to update post with id " + post.getId(), e);
 		}
 		return post;
+	}
+
+	@Override
+	public int countAll() {
+		String query = "select count(*) from posts";
+		int count = 0;
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			try (ResultSet result = statement.executeQuery()) {
+				if (result.next()) {
+					count = result.getInt(1);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find posts count", e);
+		}
+		return count;
+	}
+
+	@Override
+	public List<Post> findAll(int offset, int limit) {
+		String query = "select * from posts offset ? limit ?";
+		List<Post> posts = new ArrayList<>();
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, offset);
+			statement.setInt(2, limit);
+			try (ResultSet result = statement.executeQuery()) {
+				while (result.next()) {
+					Post post = new Post();
+					post.setId(result.getInt("id"));
+					post.setUserId(result.getInt("user_id"));
+					post.setTitle(result.getString("title"));
+					post.setDescription(result.getString("description"));
+					post.setCreated(result.getTimestamp("created").toLocalDateTime());
+					posts.add(post);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find all posts", e);
+		}
+		return posts;
 	}
 
 }

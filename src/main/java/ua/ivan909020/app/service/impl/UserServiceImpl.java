@@ -1,5 +1,7 @@
 package ua.ivan909020.app.service.impl;
 
+import java.util.List;
+
 import ua.ivan909020.app.dao.UserDao;
 import ua.ivan909020.app.dao.impl.UserDaoImpl;
 import ua.ivan909020.app.domain.entities.User;
@@ -62,6 +64,29 @@ public class UserServiceImpl implements UserService {
 			user = null;
 		}
 		return user;
+	}
+	
+	@Override
+	public int countByContainsUsername(String username) {
+		if (username == null) {
+			throw new IllegalArgumentException("Username of user must not be null");
+		}
+		return userDao.countByContainsUsername(username);
+	}
+	
+	@Override
+	public List<User> findContainsUsername(String username, int page, int size) {
+		if (username == null) {
+			throw new IllegalArgumentException("Username of user must not be null");
+		}
+		if (page < 1) {
+			throw new IllegalArgumentException("Page must be larger than 1");
+		}
+		if (size < 10) {
+			throw new IllegalArgumentException("Size must be larger than 10");
+		}
+		int offset = (page - 1) * size;
+		return userDao.findContainsUsername(username, offset, size);
 	}
 
 }

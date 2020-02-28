@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import ua.ivan909020.app.dao.UserDao;
 import ua.ivan909020.app.domain.entities.User;
@@ -98,6 +100,49 @@ public class UserDaoImpl implements UserDao {
 			throw new DatabaseException("Failed to find user by username " + username, e);
 		}
 		return user;
+	}
+
+	@Override
+	public int countByContainsUsername(String username) {
+		String query = "select count(*) from users where username ilike ?";
+		int count = 0;
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setString(1, "%" + username + "%");
+			try (ResultSet result = statement.executeQuery()) {
+				if (result.next()) {
+					count = result.getInt(1);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find users count by contains username " + username, e);
+		}
+		return count;
+	}
+
+	@Override
+	public List<User> findContainsUsername(String username, int offset, int limit) {
+		String query = "select * from users where username ilike ? offset ? limit ?";
+		List<User> users = new ArrayList<>();
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setString(1, "%" + username + "%");
+			statement.setInt(2, offset);
+			statement.setInt(3, limit);
+			try (ResultSet result = statement.executeQuery()) {
+				while (result.next()) {
+					User user = new User();
+					user.setId(result.getInt("id"));
+					user.setUsername(result.getString("username"));
+					user.setPassword(result.getString("password"));
+					user.setInformation(result.getString("information"));
+					users.add(user);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find users by contains username " + username, e);
+		}
+		return users;
 	}
 
 }
