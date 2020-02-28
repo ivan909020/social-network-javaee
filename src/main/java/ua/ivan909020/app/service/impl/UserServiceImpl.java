@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDao.countFollowersByUserId(id);
 	}
-	
+
 	@Override
 	public Set<User> findFollowersByUserId(Integer id, int page, int size) {
 		if (id == null) {
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDao.countFollowingByUserId(id);
 	}
-	
+
 	@Override
 	public Set<User> findFollowingByUserId(Integer id, int page, int size) {
 		if (id == null) {
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 		int offset = (page - 1) * size;
 		return userDao.findFollowingByUserId(id, offset, size);
 	}
-	
+
 	@Override
 	public boolean hasUserFollower(Integer userId, Integer followerId) {
 		if (userId == null) {
@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDao.findUserFollower(userId, followerId) != null;
 	}
-	
+
 	@Override
 	public void createUserFollower(Integer userId, Integer followerId) {
 		if (userId == null) {
