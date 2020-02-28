@@ -52,6 +52,14 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public void deleteById(Integer id) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id of post must not be null");
+		}
+		postDao.deleteById(id);
+	}
+
+	@Override
 	public int countAll() {
 		return postDao.countAll();
 	}
@@ -74,6 +82,21 @@ public class PostServiceImpl implements PostService {
 			throw new IllegalArgumentException("Id of user must not be null");
 		}
 		return postDao.countByUserId(id);
+	}
+
+	@Override
+	public List<Post> findByUserId(Integer id, int page, int size) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id of user must not be null");
+		}
+		if (page < 1) {
+			throw new IllegalArgumentException("Page must be larger than 1");
+		}
+		if (size < 10) {
+			throw new IllegalArgumentException("Size must be larger than 10");
+		}
+		int offset = (page - 1) * size;
+		return postDao.findByUserId(id, offset, size);
 	}
 
 }

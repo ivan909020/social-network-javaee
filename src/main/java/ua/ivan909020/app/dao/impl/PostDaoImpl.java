@@ -84,6 +84,18 @@ public class PostDaoImpl implements PostDao {
 	}
 
 	@Override
+	public void deleteById(Integer id) {
+		String query = "delete from posts where id = ?";
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, id);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to delete post by id " + id, e);
+		}
+	}
+
+	@Override
 	public int countAll() {
 		String query = "select count(*) from posts";
 		int count = 0;
@@ -142,5 +154,31 @@ public class PostDaoImpl implements PostDao {
 		}
 		return count;
 	}
-	
+
+	@Override
+	public List<Post> findByUserId(Integer id, int offset, int limit) {
+		String query = "select * from posts where user_id = ? offset ? limit ?";
+		List<Post> posts = new ArrayList<>();
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, id);
+			statement.setInt(2, offset);
+			statement.setInt(3, limit);
+			try (ResultSet result = statement.executeQuery()) {
+				while (result.next()) {
+					Post post = new Post();
+					post.setId(result.getInt("id"));
+					post.setUserId(result.getInt("user_id"));
+					post.setTitle(result.getString("title"));
+					post.setDescription(result.getString("description"));
+					post.setCreated(result.getTimestamp("created").toLocalDateTime());
+					posts.add(post);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find posts by user id " + id, e);
+		}
+		return posts;
+	}
+
 }

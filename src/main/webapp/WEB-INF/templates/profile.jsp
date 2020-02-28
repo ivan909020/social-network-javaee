@@ -49,3 +49,9 @@
 		<jsp:include page="users.jsp" />
 	</div>
 </c:if>
+<c:if test="${user.getPosts() != null}">
+	<div class="mt-3 mb-5">
+		<h4>Posts</h4>
+		<jsp:include page="posts.jsp" />
+	</div>
+</c:if>
