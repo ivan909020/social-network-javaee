@@ -49,4 +49,19 @@ public class UserServiceImpl implements UserService {
 		return userDao.update(user);
 	}
 
+	@Override
+	public User authenticate(String username, String password) {
+		if (username == null) {
+			throw new IllegalArgumentException("Username of user must not be null");
+		}
+		if (password == null) {
+			throw new IllegalArgumentException("Password of user must not be null");
+		}
+		User user = userDao.findByUsername(username);
+		if (user == null || !password.equals(user.getPassword())) {
+			user = null;
+		}
+		return user;
+	}
+
 }

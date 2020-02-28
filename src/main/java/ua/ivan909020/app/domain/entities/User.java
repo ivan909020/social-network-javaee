@@ -6,6 +6,8 @@ import java.util.Objects;
 
 public class User implements Serializable {
 
+	public static final String AUTHENTICATED_USER = "AUTHENTICATED_USER";
+
 	private Integer id;
 	private String username;
 	private String password;
