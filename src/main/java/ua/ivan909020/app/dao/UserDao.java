@@ -20,5 +20,11 @@ public interface UserDao extends DefaultDao<User> {
 	int countFollowingByUserId(Integer id);
 	
 	Set<User> findFollowingByUserId(Integer id, int offset, int limit);
+	
+	User findUserFollower(Integer userId, Integer followerId);
+	
+	void createUserFollower(Integer userId, Integer followerId);
+
+	void deleteUserFollower(Integer userId, Integer followerId);
 
 }

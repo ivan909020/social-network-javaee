@@ -31,6 +31,10 @@ public class UserProfileServlet extends HttpServlet {
 			req.setAttribute("userPostsCount", postService.countByUserId(userId));
 			req.setAttribute("userFollowersCount", userService.countFollowersByUserId(userId));
 			req.setAttribute("userFollowingCount", userService.countFollowingByUserId(userId));
+			User viewer = (User) req.getSession().getAttribute(User.AUTHENTICATED_USER);
+			if (viewer != null && !user.getId().equals(viewer.getId())) {
+				req.setAttribute("hasUserFollower", userService.hasUserFollower(userId, viewer.getId()));
+			}
 		}
 		req.setAttribute("template", "templates/profile.jsp");
 		req.getRequestDispatcher("/WEB-INF/main.jsp").forward(req, resp);

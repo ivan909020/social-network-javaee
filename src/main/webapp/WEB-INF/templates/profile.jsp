@@ -30,6 +30,26 @@
 						<p><a href="user/following/${user.getId()}" class="small">Following</a></p>
 					</div>
 				</div>
+				<c:if test="${hasUserFollower != null}">
+					<c:choose>
+						<c:when test="${hasUserFollower}">
+							<form action="user/follower/delete" method="post">
+								<input type="hidden" name="id" value="${user.getId()}">
+								<div class="d-flex justify-content-center">
+									<input type="submit" class="btn btn-secondary btn-sm" value="Unfollow">
+								</div>
+							</form>
+						</c:when>
+						<c:otherwise>
+							<form action="user/follower/create" method="post">
+								<input type="hidden" name="id" value="${user.getId()}">
+								<div class="d-flex justify-content-center">
+									<input type="submit" class="btn btn-primary btn-sm" value="Follow">
+								</div>
+							</form>
+						</c:otherwise>
+					</c:choose>
+				</c:if>
 			</div>
 		</div>
 	</div>

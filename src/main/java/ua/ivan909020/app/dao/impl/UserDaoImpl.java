@@ -227,4 +227,52 @@ public class UserDaoImpl implements UserDao {
 		return following;
 	}
 
+	@Override
+	public User findUserFollower(Integer userId, Integer followerId) {
+		String query = "select * from users_followers where user_id = ? and follower_id = ?";
+		User user = null;
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, userId);
+			statement.setInt(2, followerId);
+			try (ResultSet result = statement.executeQuery()) {
+				if (result.next()) {
+					user = findById(userId);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException(
+					"Failed to find user follower by user id " + userId + " and follower id " + followerId, e);
+		}
+		return user;
+	}
+
+	@Override
+	public void createUserFollower(Integer userId, Integer followerId) {
+		String query = "insert into users_followers(user_id, follower_id) values (?, ?)";
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, userId);
+			statement.setInt(2, followerId);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DatabaseException(
+					"Failed create user follower by user id " + userId + " and follower id " + followerId, e);
+		}
+	}
+
+	@Override
+	public void deleteUserFollower(Integer userId, Integer followerId) {
+		String query = "delete from users_followers where user_id = ? and follower_id = ?";
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, userId);
+			statement.setInt(2, followerId);
+			statement.executeUpdate();
+		} catch (SQLException e) {
+			throw new DatabaseException(
+					"Failed delete user follower by user id " + userId + " and follower id " + followerId, e);
+		}
+	}
+
 }

@@ -135,5 +135,47 @@ public class UserServiceImpl implements UserService {
 		int offset = (page - 1) * size;
 		return userDao.findFollowingByUserId(id, offset, size);
 	}
+	
+	@Override
+	public boolean hasUserFollower(Integer userId, Integer followerId) {
+		if (userId == null) {
+			throw new IllegalArgumentException("User Id must not be null");
+		}
+		if (followerId == null) {
+			throw new IllegalArgumentException("Follower Id must not be null");
+		}
+		if (userId.equals(followerId)) {
+			throw new ValidationException("User Id and Follower Id must be different");
+		}
+		return userDao.findUserFollower(userId, followerId) != null;
+	}
+	
+	@Override
+	public void createUserFollower(Integer userId, Integer followerId) {
+		if (userId == null) {
+			throw new IllegalArgumentException("User Id must not be null");
+		}
+		if (followerId == null) {
+			throw new IllegalArgumentException("Follower Id must not be null");
+		}
+		if (userId.equals(followerId)) {
+			throw new ValidationException("User Id and Follower Id must be different");
+		}
+		userDao.createUserFollower(userId, followerId);
+	}
+
+	@Override
+	public void deleteUserFollower(Integer userId, Integer followerId) {
+		if (userId == null) {
+			throw new IllegalArgumentException("User Id must not be null");
+		}
+		if (followerId == null) {
+			throw new IllegalArgumentException("Follower Id must not be null");
+		}
+		if (userId.equals(followerId)) {
+			throw new ValidationException("User Id and Follower Id must be different");
+		}
+		userDao.deleteUserFollower(userId, followerId);
+	}
 
 }
