@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return user;
 	}
-	
+
 	@Override
 	public int countByContainsUsername(String username) {
 		if (username == null) {
@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return userDao.countByContainsUsername(username);
 	}
-	
+
 	@Override
 	public List<User> findContainsUsername(String username, int page, int size) {
 		if (username == null) {
@@ -87,6 +87,22 @@ public class UserServiceImpl implements UserService {
 		}
 		int offset = (page - 1) * size;
 		return userDao.findContainsUsername(username, offset, size);
+	}
+
+	@Override
+	public int countFollowersByUserId(Integer id) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id of user must not be null");
+		}
+		return userDao.countFollowersByUserId(id);
+	}
+
+	@Override
+	public int countFollowingByUserId(Integer id) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id of user must not be null");
+		}
+		return userDao.countFollowingByUserId(id);
 	}
 
 }

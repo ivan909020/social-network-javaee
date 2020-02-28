@@ -125,4 +125,22 @@ public class PostDaoImpl implements PostDao {
 		return posts;
 	}
 
+	@Override
+	public int countByUserId(Integer id) {
+		String query = "select count(*) from posts where user_id = ?";
+		int count = 0;
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, id);
+			try (ResultSet result = statement.executeQuery()) {
+				if (result.next()) {
+					count = result.getInt(1);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find posts count by user id" + id, e);
+		}
+		return count;
+	}
+	
 }

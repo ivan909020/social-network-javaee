@@ -15,6 +15,11 @@
 			<li class="nav-item">
 				<a class="nav-link" href="search">Search</a>
 			</li>
+			<c:if test="${AUTHENTICATED_USER != null}">
+				<li class="nav-item">
+					<a class="nav-link" href="user/${AUTHENTICATED_USER.getId()}">My Profile</a>
+				</li>
+			</c:if>
 		</ul>
 		<span class="navbar-text">
 			<c:choose>

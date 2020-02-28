@@ -10,4 +10,6 @@ public interface PostService extends DefaultService<Post> {
 
 	List<Post> findAll(int page, int size);
 
+	int countByUserId(Integer id);
+
 }

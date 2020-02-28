@@ -50,12 +50,12 @@ public class PostServiceImpl implements PostService {
 		}
 		return postDao.update(post);
 	}
-	
+
 	@Override
 	public int countAll() {
 		return postDao.countAll();
 	}
-	
+
 	@Override
 	public List<Post> findAll(int page, int size) {
 		if (page < 1) {
@@ -66,6 +66,14 @@ public class PostServiceImpl implements PostService {
 		}
 		int offset = (page - 1) * size;
 		return postDao.findAll(offset, size);
+	}
+
+	@Override
+	public int countByUserId(Integer id) {
+		if (id == null) {
+			throw new IllegalArgumentException("Id of user must not be null");
+		}
+		return postDao.countByUserId(id);
 	}
 
 }

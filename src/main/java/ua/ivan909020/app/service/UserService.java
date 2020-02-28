@@ -12,4 +12,8 @@ public interface UserService extends DefaultService<User> {
 
 	List<User> findContainsUsername(String username, int page, int size);
 
+	int countFollowersByUserId(Integer id);
+
+	int countFollowingByUserId(Integer id);
+
 }

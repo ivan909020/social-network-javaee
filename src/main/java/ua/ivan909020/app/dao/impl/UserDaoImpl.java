@@ -145,4 +145,40 @@ public class UserDaoImpl implements UserDao {
 		return users;
 	}
 
+	@Override
+	public int countFollowersByUserId(Integer id) {
+		String query = "select count(*) from users_followers where user_id = ?";
+		int count = 0;
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, id);
+			try (ResultSet result = statement.executeQuery()) {
+				if (result.next()) {
+					count = result.getInt(1);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find followers count by user id" + id, e);
+		}
+		return count;
+	}
+
+	@Override
+	public int countFollowingByUserId(Integer id) {
+		String query = "select count(*) from users_followers where follower_id = ?";
+		int count = 0;
+		try (Connection connection = databaseConnection.openConnection();
+				PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, id);
+			try (ResultSet result = statement.executeQuery()) {
+				if (result.next()) {
+					count = result.getInt(1);
+				}
+			}
+		} catch (SQLException e) {
+			throw new DatabaseException("Failed to find following count by follower id" + id, e);
+		}
+		return count;
+	}
+
 }

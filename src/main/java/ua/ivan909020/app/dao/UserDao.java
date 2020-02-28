@@ -11,5 +11,9 @@ public interface UserDao extends DefaultDao<User> {
 	int countByContainsUsername(String username);
 
 	List<User> findContainsUsername(String username, int offset, int limit);
+	
+	int countFollowersByUserId(Integer id);
+	
+	int countFollowingByUserId(Integer id);
 
 }
