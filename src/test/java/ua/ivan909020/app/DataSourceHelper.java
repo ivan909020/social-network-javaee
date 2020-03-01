@@ -90,7 +90,7 @@ final class DataSourceHelper {
 			truncateTable(table);
 		}
 		for (String sequence : findAllSequences()) {
-			resetSequence(sequence);
+			restartSequence(sequence);
 		}
 	}
 
@@ -136,13 +136,13 @@ final class DataSourceHelper {
 		return sequences;
 	}
 
-	private void resetSequence(String sequenceName) {
+	private void restartSequence(String sequenceName) {
 		String query = String.format("alter sequence %s restart with 1", sequenceName);
 		try (Connection connection = datasource.getConnection();
 				Statement statement = connection.createStatement()) {
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
-			throw new DatabaseException("Failed to update sequence with name " + sequenceName, e);
+			throw new DatabaseException("Failed to restart sequence with name " + sequenceName, e);
 		}
 	}
 
