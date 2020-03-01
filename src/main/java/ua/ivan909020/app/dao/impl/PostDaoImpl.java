@@ -40,6 +40,7 @@ public class PostDaoImpl implements PostDao {
 					post.setUserId(result.getInt("user_id"));
 					post.setTitle(result.getString("title"));
 					post.setDescription(result.getString("description"));
+					post.setCreated(result.getTimestamp("created").toLocalDateTime());
 				}
 			}
 		} catch (SQLException e) {
