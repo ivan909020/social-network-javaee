@@ -76,7 +76,10 @@ public class UserDaoImpl implements UserDao {
 			statement.setString(1, user.getPassword());
 			statement.setString(2, user.getInformation());
 			statement.setInt(3, user.getId());
-			statement.executeUpdate();
+			int result = statement.executeUpdate();
+			if (result == 0) {
+				user = null;
+			}
 		} catch (SQLException e) {
 			throw new DatabaseException("Failed to update user with id " + user.getId(), e);
 		}
