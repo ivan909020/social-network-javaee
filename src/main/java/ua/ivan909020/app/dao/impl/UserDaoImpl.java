@@ -51,11 +51,12 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public User create(User user) {
-		String query = "insert into users(username, password) values (?, ?)";
+		String query = "insert into users(username, password, information) values (?, ?, ?)";
 		try (Connection connection = databaseConnection.openConnection();
 				PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 			statement.setString(1, user.getUsername());
 			statement.setString(2, user.getPassword());
+			statement.setString(3, user.getInformation());
 			statement.execute();
 			try (ResultSet result = statement.getGeneratedKeys()) {
 				result.next();
@@ -75,7 +76,10 @@ public class UserDaoImpl implements UserDao {
 			statement.setString(1, user.getPassword());
 			statement.setString(2, user.getInformation());
 			statement.setInt(3, user.getId());
-			statement.executeUpdate();
+			int result = statement.executeUpdate();
+			if (result == 0) {
+				user = null;
+			}
 		} catch (SQLException e) {
 			throw new DatabaseException("Failed to update user with id " + user.getId(), e);
 		}

@@ -40,6 +40,7 @@ public class PostDaoImpl implements PostDao {
 					post.setUserId(result.getInt("user_id"));
 					post.setTitle(result.getString("title"));
 					post.setDescription(result.getString("description"));
+					post.setCreated(result.getTimestamp("created").toLocalDateTime());
 				}
 			}
 		} catch (SQLException e) {
@@ -76,7 +77,10 @@ public class PostDaoImpl implements PostDao {
 			statement.setString(1, post.getTitle());
 			statement.setString(2, post.getDescription());
 			statement.setInt(3, post.getId());
-			statement.executeUpdate();
+			int result = statement.executeUpdate();
+			if (result == 0) {
+				post = null;
+			}
 		} catch (SQLException e) {
 			throw new DatabaseException("Failed to update post with id " + post.getId(), e);
 		}
