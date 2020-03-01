@@ -87,7 +87,7 @@ final class DataSourceHelper {
 
 	private void clearDatabase() {
 		for (String table : findAllTables()) {
-			deleteTable(table);
+			truncateTable(table);
 		}
 		for (String sequence : findAllSequences()) {
 			resetSequence(sequence);
@@ -110,13 +110,13 @@ final class DataSourceHelper {
 		return tables;
 	}
 
-	private void deleteTable(String tableName) {
+	private void truncateTable(String tableName) {
 		String query = String.format("truncate table %s cascade", tableName);
 		try (Connection connection = datasource.getConnection();
 				Statement statement = connection.createStatement()) {
 			statement.executeUpdate(query);
 		} catch (SQLException e) {
-			throw new DatabaseException("Failed to delete table by name " + tableName, e);
+			throw new DatabaseException("Failed to truncate table by name " + tableName, e);
 		}
 	}
 
