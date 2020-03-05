@@ -28,8 +28,8 @@ public class PostDaoTest {
 	private User createStubUser(String username) {
 		User user = new User();
 		user.setUsername(username);
-		user.setPassword(username);
-		user.setInformation(username);
+		user.setPassword("");
+		user.setInformation("");
 		return user;
 	}
 
@@ -37,7 +37,7 @@ public class PostDaoTest {
 		Post post = new Post();
 		post.setUserId(userId);
 		post.setTitle(title);
-		post.setDescription(title);
+		post.setDescription("");
 		post.setCreated(LocalDateTime.now());
 		return post;
 	}
@@ -87,7 +87,6 @@ public class PostDaoTest {
 		Post createdPost = postDao.create(createStubPost(createdUser.getId(), "title5"));
 
 		createdPost.setTitle("updated_title5");
-		createdPost.setDescription("updated_title5");
 		Post updatedPost = postDao.update(createdPost);
 
 		Post expectedPost = createStubPost(createdUser.getId(), "updated_title5");
@@ -98,7 +97,7 @@ public class PostDaoTest {
 	}
 
 	@Test
-	public void update_notExsist() {
+	public void update_notExists() {
 		Post postToUpdate = createStubPost(666, "title6");
 		postToUpdate.setId(999);
 
@@ -159,6 +158,13 @@ public class PostDaoTest {
 	}
 
 	@Test
+	public void countByUserId_notExists() {
+		int countPosts = postDao.countByUserId(999);
+
+		assertEquals(0, countPosts);
+	}
+
+	@Test
 	public void findByUserId() {
 		User createdUser_1 = userDao.create(createStubUser("username9"));
 		Post createdPost_1 = postDao.create(createStubPost(createdUser_1.getId(), "title13"));
@@ -177,7 +183,7 @@ public class PostDaoTest {
 	}
 
 	@Test
-	public void findByUserId_notExsist() {
+	public void findByUserId_notExists() {
 		List<Post> receivedPosts = postDao.findByUserId(666, 0, 20);
 
 		assertTrue(receivedPosts.isEmpty());
