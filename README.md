@@ -1,7 +1,9 @@
 # social-network-javaee
+Social network
+
 
 ## Technology stack
-Java 8, Servlets, Apache Tomcat 9, Maven, Postgresql, JSP, JSTL, HTML, JDBC
+Java 8, Servlets, Apache Tomcat 9, Maven, Postgresql, JSP, JSTL, HTML, JDBC, JUnit
 
 ## Screenshots
 ![](src/main/resources/images/1.jpg)

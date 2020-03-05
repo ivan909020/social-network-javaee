@@ -241,7 +241,8 @@ public class UserDaoImpl implements UserDao {
 			statement.setInt(2, followerId);
 			try (ResultSet result = statement.executeQuery()) {
 				if (result.next()) {
-					user = findById(userId);
+					int userFollowerId = result.getInt("follower_id");
+					user = findById(userFollowerId);
 				}
 			}
 		} catch (SQLException e) {
