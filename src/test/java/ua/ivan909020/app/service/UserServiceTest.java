@@ -518,4 +518,24 @@ public class UserServiceTest {
 		}
 	}
 
+	@Test
+	public void isUsernameExists() {
+		userService.create(createStubUser("username30"));
+
+		boolean isUsernameExists = userService.isUsernameExists("username30");
+
+		assertTrue(isUsernameExists);
+	}
+
+	@Test
+	public void isUsernameExists_null_throwsException() {
+		String username = null;
+		try {
+			userService.isUsernameExists(username);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Username of user must not be null", e.getMessage());
+		}
+	}
+
 }
