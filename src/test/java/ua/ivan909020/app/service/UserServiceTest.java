@@ -137,6 +137,13 @@ public class UserServiceTest {
 	}
 
 	@Test
+	public void authenticate_incorrectUsernameOrPassword() {
+		User authhenticatedUser = userService.authenticate("666", "666");
+
+		assertNull(authhenticatedUser);
+	}
+
+	@Test
 	public void authenticate_usernameIsNull_throws() {
 		try {
 			userService.authenticate(null, "666");
