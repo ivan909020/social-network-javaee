@@ -23,14 +23,14 @@ import ua.ivan909020.app.service.impl.UserServiceImpl;
 @RunWith(DataSourceRunner.class)
 public class PostServiceTest {
 
-	private UserService userService = UserServiceImpl.getInstance();
+	private final UserService userService = UserServiceImpl.getInstance();
 	private final PostService postService = PostServiceImpl.getInstance();
 
 	private User createStubUser(String username) {
 		User user = new User();
 		user.setUsername(username);
-		user.setPassword(username);
-		user.setInformation(username);
+		user.setPassword("");
+		user.setInformation("");
 		return user;
 	}
 
@@ -38,7 +38,7 @@ public class PostServiceTest {
 		Post post = new Post();
 		post.setUserId(userId);
 		post.setTitle(title);
-		post.setDescription(title);
+		post.setDescription("");
 		post.setCreated(LocalDateTime.now());
 		return post;
 	}
@@ -106,12 +106,11 @@ public class PostServiceTest {
 		Post createdPost = postService.create(createStubPost(createdUser.getId(), "title4"));
 
 		createdPost.setTitle("updated_title4");
-		createdPost.setDescription("updated_title4");
 		Post updatedPost = postService.update(createdPost);
 
 		Post expectedPost = createStubPost(createdUser.getId(), "updated_title4");
-		expectedPost.setId(updatedPost.getId());
-		expectedPost.setCreated(updatedPost.getCreated());
+		expectedPost.setId(createdPost.getId());
+		expectedPost.setCreated(createdPost.getCreated());
 
 		assertEquals(expectedPost, updatedPost);
 	}
@@ -129,9 +128,9 @@ public class PostServiceTest {
 
 	@Test
 	public void update_withoutId_throwsException() {
-		Post postToCreate = createStubPost(999, "title5");
+		Post postToUpdate = createStubPost(999, "title5");
 		try {
-			postService.update(postToCreate);
+			postService.update(postToUpdate);
 			fail();
 		} catch (ValidationException e) {
 			assertEquals("Id of post must not be null", e.getMessage());

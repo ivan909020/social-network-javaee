@@ -74,7 +74,7 @@ public class UserDaoTest {
 		User updatedUser = userDao.update(createdUser);
 
 		User expectedUser = createStubUser("updated_username5");
-		expectedUser.setId(updatedUser.getId());
+		expectedUser.setId(createdUser.getId());
 
 		assertEquals(expectedUser, updatedUser);
 	}
