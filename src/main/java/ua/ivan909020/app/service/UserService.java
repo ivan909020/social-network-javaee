@@ -27,4 +27,6 @@ public interface UserService extends DefaultService<User> {
 
 	void deleteUserFollower(Integer userId, Integer followerId);
 
+	boolean isUsernameExists(String username);
+
 }

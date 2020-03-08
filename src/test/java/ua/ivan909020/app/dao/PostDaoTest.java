@@ -90,8 +90,8 @@ public class PostDaoTest {
 		Post updatedPost = postDao.update(createdPost);
 
 		Post expectedPost = createStubPost(createdUser.getId(), "updated_title5");
-		expectedPost.setId(updatedPost.getId());
-		expectedPost.setCreated(updatedPost.getCreated());
+		expectedPost.setId(createdPost.getId());
+		expectedPost.setCreated(createdPost.getCreated());
 
 		assertEquals(expectedPost, updatedPost);
 	}

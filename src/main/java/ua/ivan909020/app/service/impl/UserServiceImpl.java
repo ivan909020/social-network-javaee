@@ -178,4 +178,12 @@ public class UserServiceImpl implements UserService {
 		userDao.deleteUserFollower(userId, followerId);
 	}
 
+	@Override
+	public boolean isUsernameExists(String username) {
+		if (username == null) {
+			throw new IllegalArgumentException("Username of user must not be null");
+		}
+		return userDao.findByUsername(username) != null;
+	}
+
 }
