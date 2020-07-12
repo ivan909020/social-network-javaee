@@ -17,7 +17,7 @@ public class PostDaoImpl implements PostDao {
 
 	private static final PostDao INSTANCE = new PostDaoImpl();
 
-	private DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+	private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
 	private PostDaoImpl() {
 	}

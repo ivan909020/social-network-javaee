@@ -20,7 +20,7 @@ final class DataSourceHelper {
 
 	private final static DataSourceHelper INSTANCE = new DataSourceHelper();
 
-	private DataSource datasource;
+	private final DataSource datasource;
 
 	private DataSourceHelper() {
 		this.datasource = createDataSource();
