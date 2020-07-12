@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <h2>Search users <c:if test="${usersCount != null}">(${usersCount} pieces)</c:if></h2>
-<form action="/search">
+<form action="search">
 	<div class="input-group input-group-sm mb-3">
 		<input type="text" class="form-control" placeholder="Username"
 			name="username" value="${param.username}">

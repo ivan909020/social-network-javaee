@@ -18,7 +18,7 @@ public class UserDaoImpl implements UserDao {
 
 	private static final UserDao INSTANCE = new UserDaoImpl();
 
-	private DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+	private final DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
 	private UserDaoImpl() {
 	}

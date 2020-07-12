@@ -22,8 +22,8 @@ import ua.ivan909020.app.domain.entities.User;
 @RunWith(DataSourceRunner.class)
 public class PostDaoTest {
 
-	private UserDao userDao = UserDaoImpl.getInstance();
-	private PostDao postDao = PostDaoImpl.getInstance();
+	private final UserDao userDao = UserDaoImpl.getInstance();
+	private final PostDao postDao = PostDaoImpl.getInstance();
 
 	private User createStubUser(String username) {
 		User user = new User();
