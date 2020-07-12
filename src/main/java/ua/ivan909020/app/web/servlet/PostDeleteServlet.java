@@ -1,17 +1,18 @@
 package ua.ivan909020.app.web.servlet;
 
-import java.io.IOException;
+import ua.ivan909020.app.domain.entities.Post;
+import ua.ivan909020.app.domain.entities.User;
+import ua.ivan909020.app.exception.EntityNotFoundException;
+import ua.ivan909020.app.exception.ValidationException;
+import ua.ivan909020.app.service.PostService;
+import ua.ivan909020.app.service.impl.PostServiceImpl;
+import ua.ivan909020.app.util.NumberUtils;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import ua.ivan909020.app.domain.entities.Post;
-import ua.ivan909020.app.domain.entities.User;
-import ua.ivan909020.app.service.PostService;
-import ua.ivan909020.app.service.impl.PostServiceImpl;
-import ua.ivan909020.app.util.NumberUtils;
+import java.io.IOException;
 
 @WebServlet("/post/delete")
 public class PostDeleteServlet extends HttpServlet {
@@ -24,9 +25,16 @@ public class PostDeleteServlet extends HttpServlet {
 
 		Post post = postService.findById(postId);
 		User user = (User) req.getSession().getAttribute(User.AUTHENTICATED_USER);
-		if (post != null && user != null && post.getUserId().equals(user.getId())) {
-			postService.deleteById(postId);
+		if (post == null) {
+			throw new EntityNotFoundException("Post with id " + postId + " not found");
 		}
+		if (user == null) {
+			throw new EntityNotFoundException("Authenticated user not found");
+		}
+		if (!post.getUserId().equals(user.getId())) {
+			throw new ValidationException("Post with id " + postId + " not belongs user with id " + user.getId());
+		}
+		postService.deleteById(postId);
 		resp.sendRedirect(req.getHeader("referer"));
 	}
 
